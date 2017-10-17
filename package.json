@@ -1,0 +1,35 @@
+{
+    "name": "digipolis-payment-engine",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node_modules/.bin/nodemon localhost 3000",
+        "test": "mocha test",
+        "debugTest": "DEBUG=* mocha test",
+        "lint": "node_modules/.bin/eslint ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zarybnicky/engine.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^4.9.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.7.0",
+        "mocha": "^4.0.1",
+        "nodemon": "^1.12.1",
+        "should": "^13.1.2"
+    },
+    "dependencies": {
+        "express": "^4.16.2",
+        "express-winston": "^2.4.0",
+        "socket.io": "^2.0.3",
+        "socket.io-client": "^2.0.3",
+        "socketio-winston-logger": "^1.0.2",
+        "winston": "^2.4.0"
+    }
+}
