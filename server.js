@@ -1,19 +1,28 @@
 const express = require('express');
-const { socketLogger, accessLogger, errorLogger } = require('./logger');
-const router = require('./router');
+const helmet = require('helmet');
+const compression = require('compression');
+const bodyParser = require('body-parser');
+const logger = require('./logger');
 
 const app = express();
 const server = require('http').Server(app);
 
 const io = require('socket.io')(server);
 
-io.use(socketLogger);
+app.use(logger.requestLogger);
 
-// For more REST middleware see https://github.com/senchalabs/connect#middleware
-app.use(accessLogger);
-app.use(router);
-app.use(errorLogger);
+app.use(helmet());
+if (process.env.NODE_ENV !== 'development') {
+  app.use(compression());
+}
+app.use(bodyParser.json({ limit: '4096kb' }));
 
+// eslint-disable-next-line import/no-dynamic-require, global-require
+require('glob').sync('./routes/*.js').forEach(file => require(file)(app));
+
+app.use(require('digipolis-error').middleware({ logger }));
+
+io.use(logger.socketLogger);
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     io.sockets.emit('message', msg);
